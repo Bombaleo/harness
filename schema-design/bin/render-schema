@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+# Usage: bin/render-schema <workspace_dir>
+require "json"
+require_relative "../lib/schema_harness/renderer"
+
+ws = ARGV[0] or abort "usage: bin/render-schema <workspace_dir>"
+schema = JSON.parse(File.read("#{ws}/schema/current.json"))
+File.write("#{ws}/schema/current.md",  SchemaHarness::Renderer.to_markdown(schema))
+File.write("#{ws}/schema/current.mmd", SchemaHarness::Renderer.to_mermaid(schema))
+warn "rendered #{ws}/schema/current.md and current.mmd"

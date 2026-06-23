@@ -13,6 +13,19 @@ RSpec.describe SchemaHarness::Planner do
     expect(pr["vendors"]).to be < pr["postings"]
   end
 
+  it "depends on both ends of a relationship" do
+    vendors = { slug: "vendors", title: "Vendors",
+      requirements: [{ "type" => "entity_exists", "entity" => "Vendor" }] }
+    orgs = { slug: "orgs", title: "Orgs",
+      requirements: [{ "type" => "entity_exists", "entity" => "Organization" }] }
+    rel = { slug: "rel", title: "Rel", requirements: [
+      { "type" => "relationship", "from" => "Vendor", "to" => "Organization", "cardinality" => "many_to_one" }] }
+    prd = described_class.order([rel, vendors, orgs])
+    pr = prd["stories"].to_h { |s| [s["slug"], s["priority"]] }
+    expect(pr["vendors"]).to be < pr["rel"]
+    expect(pr["orgs"]).to be < pr["rel"]
+  end
+
   it "records a cycle instead of raising" do
     a = { slug: "a", title: "A", requirements: [
       { "type" => "entity_exists", "entity" => "A" },

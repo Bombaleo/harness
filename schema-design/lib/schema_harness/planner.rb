@@ -14,7 +14,7 @@ module SchemaHarness
       stories.each do |s|
         s[:requirements].each do |r|
           next unless r["type"] == "relationship"
-          targets = r["cardinality"] == "many_to_many" ? [r["from"], r["to"]] : [r["to"]]
+          targets = [r["from"], r["to"]]
           targets.each do |ent|
             dep = owner[ent]
             deps[s[:slug]] << dep if dep && dep != s[:slug]

@@ -1,0 +1,17 @@
+{
+  "story_slug": "vendor-onboarding",
+  "title": "Vendor onboarding",
+  "domain": "VENDOR",
+  "requirements": [
+    { "id": "REQ-VENDOR-001", "type": "entity_exists", "entity": "Vendor", "description": "..." },
+    { "id": "REQ-VENDOR-002", "type": "attribute", "entity": "Vendor", "name": "status",
+      "data_type": "enum", "nullable": false, "description": "..." },
+    { "id": "REQ-VENDOR-003", "type": "relationship", "from": "JobPosting", "to": "Vendor",
+      "cardinality": "many_to_one", "description": "..." },
+    { "id": "REQ-VENDOR-004", "type": "constraint", "entity": "Rate", "constraint_kind": "check",
+      "expression": "amount_cents >= 0", "description": "..." },
+    { "id": "REQ-VENDOR-005", "type": "state_transition", "entity": "JobPosting",
+      "states": ["draft","published","closed"],
+      "transitions": [["draft","published"],["published","closed"]], "description": "..." }
+  ]
+}

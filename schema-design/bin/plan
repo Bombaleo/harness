@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# Usage: bin/plan <workspace_dir>
+require "json"
+require_relative "../lib/schema_harness/planner"
+require_relative "../lib/schema_harness/contracts"
+
+ws = ARGV[0] or abort "usage: bin/plan <workspace_dir>"
+files = Dir["#{ws}/requirements/us_*.json"].sort
+abort "no requirements files in #{ws}/requirements" if files.empty?
+
+stories = files.map do |f|
+  h = JSON.parse(File.read(f))
+  errs = SchemaHarness::Contracts.validate_requirements(h)
+  abort "#{f}: #{errs.join("; ")}" unless errs.empty?
+  { slug: h["story_slug"], title: h["title"], requirements: h["requirements"] }
+end
+
+prd = SchemaHarness::Planner.order(stories)
+File.write("#{ws}/prd.json", JSON.pretty_generate(prd))
+warn "wrote #{ws}/prd.json (#{prd["stories"].size} stories, #{prd["cycles"].size} cycles broken)"

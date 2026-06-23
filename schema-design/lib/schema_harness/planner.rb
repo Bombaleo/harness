@@ -25,7 +25,6 @@ module SchemaHarness
       cycles = []
       sorted = tsort(deps, cycles)
       prio = sorted.each_with_index.to_h { |slug, i| [slug, i + 1] }
-      by_slug = stories.to_h { |s| [s[:slug], s] }
 
       {
         "branchName" => "schema-design",

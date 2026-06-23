@@ -13,6 +13,7 @@ module SchemaHarness
           out << "| #{c["name"]} | #{c["type"]} | #{c["null"] == false ? "NO" : "yes"} | #{c["primary_key"] ? "PK" : ""} |"
         end
         Array(t["foreign_keys"]).each { |fk| out << "\n- FK `#{fk["column"]}` → `#{fk["references"]}` (on_delete: #{fk["on_delete"]})" }
+        Array(t["indexes"]).each { |ix| out << "- INDEX `#{ix["name"]}` ON (#{Array(ix["columns"]).join(", ")})#{ix["unique"] ? " UNIQUE" : ""}" }
         Array(t["checks"]).each { |ck| out << "- CHECK `#{ck["name"]}`: `#{ck["expression"]}`" }
         out << ""
       end

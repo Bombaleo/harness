@@ -1,0 +1,4 @@
+{ "tables": [ { "name": "rates",
+  "columns": [ { "name": "id", "type": "uuid", "null": false, "primary_key": true },
+               { "name": "amount", "type": "float", "null": false } ] } ],
+  "enums": [], "associations": [] }

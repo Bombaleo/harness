@@ -13,7 +13,14 @@
 
 ## Global Constraints
 
-- All paths below are relative to `harness/schema-design/` unless absolute.
+- **Git repo root is `/Users/yaroslavlebedevich/Projects/JJJ-V2/harness`.** The harness lives in
+  `schema-design/` within it. In step commands, read every `cd harness/schema-design` as
+  `cd /Users/yaroslavlebedevich/Projects/JJJ-V2/harness/schema-design`, and every `git add` path
+  is relative to the repo root (`schema-design/...`, NOT `harness/schema-design/...`).
+- **Ruby 3.3.10**, pinned via `schema-design/.ruby-version` (matches the dash-api app; resolved by
+  rbenv shims). Bundler 2.7.x. Run all `ruby`/`bundle`/`rspec` commands from inside `schema-design/`
+  so the pin takes effect.
+- All other paths below are relative to `harness/schema-design/` unless absolute.
 - Ruby tools use **stdlib only** — no runtime gems. RSpec is the only dev dependency.
 - Requirement IDs match `^REQ-[A-Z0-9]+-\d{3}$` (e.g. `REQ-VENDOR-001`) and are **stable/frozen** once (R) runs; never minted inside the loop.
 - `schema/current.json` is the single source of truth; `current.md` and `current.mmd` are always regenerated from it, never hand-edited.
@@ -60,6 +67,7 @@ harness/schema-design/
 **Files:**
 - Create: `docs/input-contract.md`
 - Create: `Gemfile`
+- Create: `.ruby-version` (contents: `3.3.10`)
 - Create: `spec/spec_helper.rb`
 
 **Interfaces:**

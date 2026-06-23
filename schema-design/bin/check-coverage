@@ -1,0 +1,20 @@
+#!/usr/bin/env ruby
+# Usage: bin/check-coverage <workspace_dir> <slug>   (exit 0 = covered, 1 = gaps)
+require "json"
+require_relative "../lib/schema_harness/coverage"
+
+ws, slug = ARGV
+abort "usage: bin/check-coverage <workspace_dir> <slug>" unless ws && slug
+reqs   = JSON.parse(File.read("#{ws}/requirements/us_#{slug}.json"))
+cov    = JSON.parse(File.read("#{ws}/us_#{slug}/coverage.json"))
+schema = JSON.parse(File.read("#{ws}/schema/current.json"))
+
+errors = SchemaHarness::Coverage.check(requirements: reqs, coverage: cov, schema: schema)
+if errors.empty?
+  warn "coverage OK for #{slug}"
+  exit 0
+else
+  warn "COVERAGE GAPS for #{slug}:"
+  errors.each { |x| warn "  - #{x}" }
+  exit 1
+end
